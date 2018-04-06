@@ -6,8 +6,10 @@ multiplicación de matrices optimizada del ejercicio 1. Según el tamaño de las
 matrices y de bloque elegido 
 
 ¿Cuál es más rápido? 
+    cuando N y r son iguales (ej 32x32)
 ¿Por qué? 
 ¿Cuál sería el tamaño de bloque óptimo para un determinado tamaño de matriz?
+    El que aproveche mejor el tamaño del buffer
 
 -------------
 ## notas
