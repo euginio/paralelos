@@ -1,23 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define ORDENXFILAS 0
-#define ORDENXCOLUMNAS 1
+#include <pthread.h>
 
 //Dimension por defecto de las matrices
-int N = 100;
-
-//Retorna el valor de la matriz en la posicion fila y columna segun el orden que este ordenada
-double getValor(double *matriz, int fila, int columna, int orden)
-{
-  if (orden == ORDENXFILAS)
-  {
-    return (matriz[fila * N + columna]);
-  }
-  else
-  {
-    return (matriz[fila + columna * N]);
-  }
-}
+int N;
 
 //Para calcular tiempo
 double dwalltime()
@@ -54,23 +40,22 @@ int main(int argc, char *argv[])
   {
     for (j = 0; j < N; j++)
     {
-		A[i * N + j] = 1;
-		B[i * N + j] = 1;
+		A[i * N + j] = 1;	B[i * N + j] = 1;
     }
   }
 
   //Realiza la multiplicacion
 
+  int aux;
   timetick = dwalltime();
-
   for (i = 0; i < N; i++)
   {
     for (j = 0; j < N; j++)
     {
-	  int aux=0;
+	  aux=0;
       for (k = 0; k < N; k++)
       {
-		 aux += A[i * N + k] * B[k * N + j];
+		 aux = aux + A[i * N + k] * B[k * N + j];
       }
 	  C[i * N + j] = aux;
     }
@@ -83,21 +68,13 @@ int main(int argc, char *argv[])
   {
     for (j = 0; j < N; j++)
     {
-      check = check && (getValor(C, i, j, ORDENXFILAS) == N);
+      check = check && (C[i * N + j] == N);
     }
   }
 
-  if (check)
-  {
-    printf("Multiplicacion de matrices resultado correcto\n");
-  }
-  else
-  {
-    printf("Multiplicacion de matrices resultado erroneo\n");
-  }
+  if (check)  {    printf("Multiplicacion de matrices resultado correcto\n");  }
+  else  	  {    printf("Multiplicacion de matrices resultado erroneo\n");  }
 
-  free(A);
-  free(B);
-  free(C);
+  free(A);   free(B);  free(C);
   return (0);
 }
