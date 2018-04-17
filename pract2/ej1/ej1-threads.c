@@ -61,12 +61,10 @@ int main(int argc, char *argv[])
     ids[i] = i;
     pthread_create(&threads[i], &attr, multiplicacion, &ids[i]);
   }
-  printf("aca3\n");
   for (int i = 0; i < NUM_THREADS; i++)
   {
     pthread_join(threads[i], NULL);
   }
-  printf("aca4\n");
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
 
   //Verifica el resultado
@@ -100,8 +98,11 @@ void *multiplicacion(void *ptr)
   id = *p;
 
   int aux, i, j, k;
-  printf("aca5\n");
-  for (i = N / NUM_THREADS * id; i < (N / (NUM_THREADS) * (id + 1)) - 1; i++)
+  // printf("N %d \n", N);
+  // printf("NUM_THREADS %d \n", NUM_THREADS);
+  // printf("id %d \n", id);
+
+  for (i = (N / NUM_THREADS * id); i < (N / NUM_THREADS * (id + 1)); i++)
   {
     for (j = 0; j < N; j++)
     {
@@ -110,6 +111,7 @@ void *multiplicacion(void *ptr)
       {
         aux = aux + A[i * N + k] * B[k * N + j];
       }
+      // printf("aux %d ", aux);
       C[i * N + j] = aux;
     }
   }
