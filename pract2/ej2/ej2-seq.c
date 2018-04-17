@@ -4,11 +4,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <pthread.h>
 
 //Dimension por defecto de las matrices
-int N, NUM_THREADS, x;
+int N, x;
 double *vector;
+int tot = 0;
 
 //Para calcular tiempo
 double dwalltime()
@@ -21,8 +21,6 @@ double dwalltime()
   return sec;
 }
 
-void *num_ocurrencias(void *ptr);
-
 int main(int argc, char *argv[])
 {
   int i, j, k;
@@ -30,18 +28,12 @@ int main(int argc, char *argv[])
   double timetick;
 
   //Controla los argumentos al programa
-  if ((argc != 4) || ((N = atoi(argv[1])) <= 0)|| ((NUM_THREADS = atoi(argv[2])) <= 0)|| ((x = atoi(argv[3])) <= 0))
+  if ((argc != 3) || ((N = atoi(argv[1])) <= 0) || ((x = atoi(argv[2])) <= 0))
   {
     printf("\nUsar: %s n\n  n: Dimension del vector N\n", argv[0]);
-    printf("\nUsar: %s NUM_THREADS\n  NUM_THREADS: cantidad de hilos\n", argv[0]);
     printf("\nUsar: %s x\n  x: valor a buscar en el vector\n", argv[0]);
     exit(1);
   }
-
-  int ids[NUM_THREADS];
-  pthread_attr_t attr;
-  pthread_t threads[NUM_THREADS];
-  pthread_attr_init(&attr);
 
   //Aloca memoria para las matrices
   vector = (double *)malloc(sizeof(double) * N);
@@ -52,39 +44,17 @@ int main(int argc, char *argv[])
   }
   //Realiza la búsqueda
   timetick = dwalltime();
-  for (int i = 0; i < NUM_THREADS; i++)
+  for (i = 0; i < N; i++)
   {
-    ids[i] = i;
-    pthread_create(&threads[i], &attr, num_ocurrencias, &ids[i]);
-  }
-  for (int i = 0; i < NUM_THREADS; i++)
-  {
-    pthread_join(threads[i], NULL);
+    if (vector[i] == x)
+    {
+      tot = tot + 1;
+    }
   }
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
 
+  printf("tot %d \n", tot);
+
   free(vector);
   return (0);
-}
-
-void *num_ocurrencias(void *ptr)
-{
-  int *p, id;
-  p = (int *)ptr;
-  id = *p;
-
-  int aux, i;
-  // printf("N %d \n", N);
-  // printf("NUM_THREADS %d \n", NUM_THREADS);
-  // printf("id %d \n", id);
-
-  aux = 0;
-  for (i = (N / NUM_THREADS * id); i < (N / NUM_THREADS * (id + 1)); i++)
-  {
-    if (vector[i] == x){
-      aux = aux + 1;
-    }
-    // printf("aux %d ", aux);
-  }
-  pthread_exit(0);
 }
