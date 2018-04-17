@@ -9,6 +9,8 @@
 //Dimension por defecto de las matrices
 int N, NUM_THREADS, x;
 double *vector;
+int tot = 0;
+pthread_mutex_t tot_value_lock;
 
 //Para calcular tiempo
 double dwalltime()
@@ -30,7 +32,7 @@ int main(int argc, char *argv[])
   double timetick;
 
   //Controla los argumentos al programa
-  if ((argc != 4) || ((N = atoi(argv[1])) <= 0)|| ((NUM_THREADS = atoi(argv[2])) <= 0)|| ((x = atoi(argv[3])) <= 0))
+  if ((argc != 4) || ((N = atoi(argv[1])) <= 0) || ((NUM_THREADS = atoi(argv[2])) <= 0) || ((x = atoi(argv[3])) <= 0))
   {
     printf("\nUsar: %s n\n  n: Dimension del vector N\n", argv[0]);
     printf("\nUsar: %s NUM_THREADS\n  NUM_THREADS: cantidad de hilos\n", argv[0]);
@@ -42,6 +44,7 @@ int main(int argc, char *argv[])
   pthread_attr_t attr;
   pthread_t threads[NUM_THREADS];
   pthread_attr_init(&attr);
+  pthread_mutex_init(&tot_value_lock, NULL);
 
   //Aloca memoria para las matrices
   vector = (double *)malloc(sizeof(double) * N);
@@ -63,6 +66,8 @@ int main(int argc, char *argv[])
   }
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
 
+  printf("tot %d \n", tot);
+
   free(vector);
   return (0);
 }
@@ -73,18 +78,20 @@ void *num_ocurrencias(void *ptr)
   p = (int *)ptr;
   id = *p;
 
-  int aux, i;
+  int i;
   // printf("N %d \n", N);
   // printf("NUM_THREADS %d \n", NUM_THREADS);
   // printf("id %d \n", id);
 
-  aux = 0;
   for (i = (N / NUM_THREADS * id); i < (N / NUM_THREADS * (id + 1)); i++)
   {
-    if (vector[i] == x){
-      aux = aux + 1;
+    if (vector[i] == x)
+    {
+      pthread_mutex_lock(&tot_value_lock);
+      tot = tot + 1;
+      pthread_mutex_unlock(&tot_value_lock);
     }
-    // printf("aux %d ", aux);
+    // printf("tot %d ", tot);
   }
   pthread_exit(0);
 }
