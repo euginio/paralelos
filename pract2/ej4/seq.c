@@ -7,7 +7,7 @@
 //Dimension por defecto de las matrices
 int N;
 double *vector;
-int min = 99999;
+int prom;
 
 //Para calcular tiempo
 double dwalltime()
@@ -42,17 +42,15 @@ int main(int argc, char *argv[])
   }
 
   //Realiza la búsqueda
+  int tot = 0;
   timetick = dwalltime();
   for (i = 0; i < N; i++)
   {
-    if (vector[i] < min)
-    {
-      min = vector[i];
-    }
+    tot = tot + vector[i];
   }
+  prom = tot / vector.length;
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
-
-  printf("min %d \n", min);
+  printf("prom %d \n", prom);
 
   free(vector);
   return (0);
