@@ -6,9 +6,7 @@
 #include <pthread.h>
 
 //Dimension por defecto de las matrices
-int N, NUM_THREADS;
-double *vector;
-int tot = 0, prom;
+int N, P, *vector, tot = 0, prom;
 pthread_mutex_t prom_calc_lock;
 
 //Para calcular tiempo
@@ -31,21 +29,19 @@ int main(int argc, char *argv[])
   double timetick;
 
   //Controla los argumentos al programa
-  if ((argc != 3) || ((N = atoi(argv[1])) <= 0) || ((NUM_THREADS = atoi(argv[2])) <= 0))
+  if ((argc != 3) || ((N = atoi(argv[1])) <= 0) || ((P = atoi(argv[2])) <= 0))
   {
     printf("\nUsar: %s n\n  n: Dimension del vector N\n", argv[0]);
-    printf("\nUsar: %s NUM_THREADS\n  NUM_THREADS: cantidad de hilos\n", argv[0]);
+    printf("\nUsar: %s P\n  P: cantidad de hilos\n", argv[0]);
     exit(1);
   }
 
-  int ids[NUM_THREADS];
-  pthread_attr_t attr;
-  pthread_t threads[NUM_THREADS];
-  pthread_attr_init(&attr);
+  int ids[P];
+  pthread_t threads[P];
   pthread_mutex_init(&prom_calc_lock, NULL);
 
   //Aloca memoria para las matrices
-  vector = (double *)malloc(sizeof(double) * N);
+  vector = (int *)malloc(sizeof(int) * N);
   //Inicializa el vector con todos sus valores en 1
   for (i = 0; i < N; i++)
   {
@@ -53,18 +49,19 @@ int main(int argc, char *argv[])
   }
   //Realiza la búsqueda
   timetick = dwalltime();
-  for (int i = 0; i < NUM_THREADS; i++)
+  for (int i = 0; i < P; i++)
   {
     ids[i] = i;
-    pthread_create(&threads[i], &attr, min_search, &ids[i]);
+    pthread_create(&threads[i], NULL, prom_calc, &ids[i]);
   }
-  for (int i = 0; i < NUM_THREADS; i++)
+  for (int i = 0; i < P; i++)
   {
     pthread_join(threads[i], NULL);
   }
+  prom = tot / N;
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
 
-  printf("min %d \n", min);
+  printf("prom %d \n", prom);
 
   free(vector);
   return (0);
@@ -77,13 +74,12 @@ void *prom_calc(void *ptr)
   id = *p;
 
   int i, totLoc=0;
-  for (i = (N / NUM_THREADS * id); i < (N / NUM_THREADS * (id + 1)); i++)
+  for (i = (N / P * id); i < (N / P * (id + 1)); i++)
   {
     totLoc = totLoc + vector[i];
   }
-  int localProm = totLoc / (N / NUM_THREADS);
   pthread_mutex_lock(&prom_calc_lock);
-    prom = (prom + localProm) / 2;
+    tot = tot + totLoc
   pthread_mutex_unlock(&prom_calc_lock);
   pthread_exit(0);
 }

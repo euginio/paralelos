@@ -4,7 +4,7 @@
 
 //Dimension por defecto de las matrices
 int N;
-int NUM_THREADS;
+int P;
 double *A, *B, *C;
 
 //Para calcular tiempo
@@ -27,17 +27,15 @@ int main(int argc, char *argv[])
   double timetick;
 
   //Controla los argumentos al programa
-  if ((argc != 3) || ((N = atoi(argv[1])) <= 0) || ((NUM_THREADS = atoi(argv[2])) <= 0))
+  if ((argc != 3) || ((N = atoi(argv[1])) <= 0) || ((P = atoi(argv[2])) <= 0))
   {
     printf("\nUsar: %s n\n  n: Dimension de la matriz (nxn X nxn)\n", argv[0]);
     printf("\nUsar: %s np\n  np: numero de threads\n", argv[0]);
     exit(1);
   }
 
-  int ids[NUM_THREADS];
-  pthread_attr_t attr;
-  pthread_t threads[NUM_THREADS];
-  pthread_attr_init(&attr);
+  int ids[P];
+  pthread_t threads[P];
 
   //Aloca memoria para las matrices
   A = (double *)malloc(sizeof(double) * N * N);
@@ -55,13 +53,12 @@ int main(int argc, char *argv[])
   //Realiza la multiplicacion
 
   timetick = dwalltime();
-
-  for (int i = 0; i < NUM_THREADS; i++)
+  for (int i = 0; i < P; i++)
   {
     ids[i] = i;
-    pthread_create(&threads[i], &attr, multiplicacion, &ids[i]);
+    pthread_create(&threads[i], NULL, multiplicacion, &ids[i]);
   }
-  for (int i = 0; i < NUM_THREADS; i++)
+  for (int i = 0; i < P; i++)
   {
     pthread_join(threads[i], NULL);
   }
@@ -98,11 +95,8 @@ void *multiplicacion(void *ptr)
   id = *p;
 
   int aux, i, j, k;
-  // printf("N %d \n", N);
-  // printf("NUM_THREADS %d \n", NUM_THREADS);
-  // printf("id %d \n", id);
 
-  for (i = (N / NUM_THREADS * id); i < (N / NUM_THREADS * (id + 1)); i++)
+  for (i = ((N / P) * id); i < ((N / P) * (id + 1)); i++)
   {
     for (j = 0; j < N; j++)
     {
@@ -111,7 +105,6 @@ void *multiplicacion(void *ptr)
       {
         aux = aux + A[i * N + k] * B[k * N + j];
       }
-      // printf("aux %d ", aux);
       C[i * N + j] = aux;
     }
   }

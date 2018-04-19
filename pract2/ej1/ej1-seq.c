@@ -60,14 +60,13 @@ int main(int argc, char *argv[])
   }
 
   //Realiza la multiplicacion
-
+  int aux =0;
   timetick = dwalltime();
-
   for (i = 0; i < N; i++)
   {
     for (j = 0; j < N; j++)
     {
-	  int aux=0;
+	  aux=0;
       for (k = 0; k < N; k++)
       {
 		 aux += A[i * N + k] * B[k * N + j];
@@ -75,7 +74,6 @@ int main(int argc, char *argv[])
 	  C[i * N + j] = aux;
     }
   }
-
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
 
   //Verifica el resultado
