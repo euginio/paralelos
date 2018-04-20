@@ -45,6 +45,7 @@ int main(int argc, char *argv[])
   {
     vector[i] = 1;
   }
+  
   //Realiza la búsqueda
   timetick = dwalltime();
   for (int i = 0; i < P; i++)
@@ -77,7 +78,7 @@ void *prom_calc(void *ptr)
     totLoc = totLoc + vector[i];
   }
   pthread_mutex_lock(&prom_calc_lock);
-    tot = tot + totLoc
+  tot = tot + totLoc;
   pthread_mutex_unlock(&prom_calc_lock);
   pthread_exit(0);
 }

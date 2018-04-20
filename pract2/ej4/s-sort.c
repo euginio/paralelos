@@ -1,10 +1,10 @@
-4. Paralelizar un algoritmo que ordene un vector de N elementos por mezcla. Ejecutar con 2 y 4 Threads.
+// 4. Paralelizar un algoritmo que ordene un vector de N elementos por mezcla. Ejecutar con 2 y 4 Threads.
 
 #include <stdio.h>
 #include <stdlib.h>
 
 //Dimension por defecto de las matrices
-int N, P, *vector, copia;
+int N, P, *vector, *copia;
 
 //Para calcular tiempo
 double dwalltime()
@@ -43,21 +43,22 @@ int main(int argc, char *argv[])
   BottomUpMergeSort(vector, copia, N);
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
 
-  printf("prom %d \n", prom);
+  printf("prom %d \n", vector[1]);
 
   free(vector);
+  free(copia);
   return (0);
 }
 
 // array A[] has the items to sort; array B[] is a work array
-void BottomUpMergeSort(A[], B[], n)
+void BottomUpMergeSort(int A[], int B[],int n)
 {
     // Each 1-element run in A is already "sorted".
     // Make successively longer sorted runs of length 2, 4, 8, 16... until whole array is sorted.
-    for (width = 1; width < n; width = 2 * width)
+    for (int width = 1; width < n; width = 2 * width)
     {
         // Array A is full of runs of length width.
-        for (i = 0; i < n; i = i + 2 * width)
+        for (int i = 0; i < n; i = i + 2 * width)
         {
             // Merge two runs: A[i:i+width-1] and A[i+width:i+2*width-1] to B[]
             // or copy A[i:n-1] to B[] ( if(i+width >= n) )
@@ -73,11 +74,11 @@ void BottomUpMergeSort(A[], B[], n)
 
 //  Left run is A[iLeft :iRight-1].
 // Right run is A[iRight:iEnd-1  ].
-void BottomUpMerge(A[], iLeft, iRight, iEnd, B[])
+void BottomUpMerge(int A[], int iLeft, int iRight, int iEnd, int B[])
 {
-    i = iLeft, j = iRight;
+    int i = iLeft, j = iRight;
     // While there are elements in the left or right runs...
-    for (k = iLeft; k < iEnd; k++) {
+    for (int k = iLeft; k < iEnd; k++) {
         // If left run head exists and is <= existing right run head.
         if (i < iRight && (j >= iEnd || A[i] <= A[j])) {
             B[k] = A[i];
@@ -89,8 +90,8 @@ void BottomUpMerge(A[], iLeft, iRight, iEnd, B[])
     } 
 }
 
-void CopyArray(B[], A[], n)
+void CopyArray(int B[], int A[], int n)
 {
-    for(i = 0; i < n; i++)
+    for(int i = 0; i < n; i++)
         A[i] = B[i];
 }
