@@ -3,9 +3,7 @@
 #include <pthread.h>
 
 //Dimension por defecto de las matrices
-int N;
-int P;
-double *A, *B, *C;
+int N, P, *A, *B, *C;
 
 //Para calcular tiempo
 double dwalltime()
@@ -22,8 +20,7 @@ void *multiplicacion(void *ptr);
 
 int main(int argc, char *argv[])
 {
-  int i, j, k;
-  int check = 1;
+  int i, j, k, check = 1;
   double timetick;
 
   //Controla los argumentos al programa
@@ -38,9 +35,9 @@ int main(int argc, char *argv[])
   pthread_t threads[P];
 
   //Aloca memoria para las matrices
-  A = (double *)malloc(sizeof(double) * N * N);
-  B = (double *)malloc(sizeof(double) * N * N);
-  C = (double *)malloc(sizeof(double) * N * N);
+  A = (int *)malloc(sizeof(int) * N * N);
+  B = (int *)malloc(sizeof(int) * N * N);
+  C = (int *)malloc(sizeof(int) * N * N);
   //Inicializa las matrices A y B en 1, el resultado sera una matriz con todos sus valores en N
   for (i = 0; i < N; i++)
   {

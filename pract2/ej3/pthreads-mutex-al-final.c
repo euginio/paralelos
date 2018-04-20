@@ -6,9 +6,7 @@
 #include <pthread.h>
 
 //Dimension por defecto de las matrices
-int N, NUM_THREADS;
-double *vector;
-int MIN = 99999;
+int N, NUM_THREADS, *vector, MIN = 999999;
 pthread_mutex_t min_value_lock;
 
 //Para calcular tiempo
@@ -26,8 +24,7 @@ void *min_search(void *ptr);
 
 int main(int argc, char *argv[])
 {
-  int i;
-  int check = 1;
+  int i, check = 1;
   double timetick;
 
   //Controla los argumentos al programa
@@ -39,13 +36,11 @@ int main(int argc, char *argv[])
   }
 
   int ids[NUM_THREADS];
-  pthread_attr_t attr;
   pthread_t threads[NUM_THREADS];
-  pthread_attr_init(&attr);
   pthread_mutex_init(&min_value_lock, NULL);
 
   //Aloca memoria para las matrices
-  vector = (double *)malloc(sizeof(double) * N);
+  vector = (int *)malloc(sizeof(int) * N);
   //Inicializa el vector con todos sus valores en 1
   for (i = 0; i < N; i++)
   {
@@ -56,7 +51,7 @@ int main(int argc, char *argv[])
   for (int i = 0; i < NUM_THREADS; i++)
   {
     ids[i] = i;
-    pthread_create(&threads[i], &attr, min_search, &ids[i]);
+    pthread_create(&threads[i], NULL, min_search, &ids[i]);
   }
   for (int i = 0; i < NUM_THREADS; i++)
   {
@@ -76,15 +71,13 @@ void *min_search(void *ptr)
   p = (int *)ptr;
   id = *p;
 
-  int i, localMin;
-  localMin = MIN;
+  int i, localMin = MIN;
   for (i = (N / NUM_THREADS * id); i < (N / NUM_THREADS * (id + 1)); i++)
   {
     if (vector[i] < localMin)
     {
       localMin = vector[i];
     }
-    // printf("min %d ", min);
   }
 
   pthread_mutex_lock(&min_value_lock);

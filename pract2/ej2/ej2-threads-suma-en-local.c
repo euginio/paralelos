@@ -7,9 +7,7 @@
 #include <pthread.h>
 
 //Dimension por defecto de las matrices
-int N, NUM_THREADS, x;
-double *vector;
-int tot = 0;
+int N, NUM_THREADS, x, *vector, tot = 0;
 pthread_mutex_t tot_value_lock;
 
 //Para calcular tiempo
@@ -27,8 +25,7 @@ void *num_ocurrencias(void *ptr);
 
 int main(int argc, char *argv[])
 {
-  int i, j, k;
-  int check = 1;
+  int i, j, k, check = 1;
   double timetick;
 
   //Controla los argumentos al programa
@@ -41,13 +38,11 @@ int main(int argc, char *argv[])
   }
 
   int ids[NUM_THREADS];
-  pthread_attr_t attr;
   pthread_t threads[NUM_THREADS];
-  pthread_attr_init(&attr);
   pthread_mutex_init(&tot_value_lock, NULL);
 
   //Aloca memoria para las matrices
-  vector = (double *)malloc(sizeof(double) * N);
+  vector = (int *)malloc(sizeof(int) * N);
   //Inicializa el vector con todos sus valores en 1
   for (i = 0; i < N; i++)
   {
@@ -58,7 +53,7 @@ int main(int argc, char *argv[])
   for (int i = 0; i < NUM_THREADS; i++)
   {
     ids[i] = i;
-    pthread_create(&threads[i], &attr, num_ocurrencias, &ids[i]);
+    pthread_create(&threads[i], NULL, num_ocurrencias, &ids[i]);
   }
   for (int i = 0; i < NUM_THREADS; i++)
   {
@@ -78,8 +73,7 @@ void *num_ocurrencias(void *ptr)
   p = (int *)ptr;
   id = *p;
 
-  int i, aux;
-  aux = 0;
+  int i, aux = 0;
   // printf("N %d \n", N);
   // printf("NUM_THREADS %d \n", NUM_THREADS);
   // printf("id %d \n", id);

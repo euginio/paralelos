@@ -6,9 +6,7 @@
 #include <stdlib.h>
 
 //Dimension por defecto de las matrices
-int N, x;
-double *vector;
-int tot = 0;
+int N, x, *vector, tot = 0;
 
 //Para calcular tiempo
 double dwalltime()
@@ -23,8 +21,7 @@ double dwalltime()
 
 int main(int argc, char *argv[])
 {
-  int i, j, k;
-  int check = 1;
+  int i, j, k, check = 1;
   double timetick;
 
   //Controla los argumentos al programa
@@ -36,7 +33,7 @@ int main(int argc, char *argv[])
   }
 
   //Aloca memoria para las matrices
-  vector = (double *)malloc(sizeof(double) * N);
+  vector = (int *)malloc(sizeof(int) * N);
   //Inicializa el vector con todos sus valores en 1
   for (i = 0; i < N; i++)
   {

@@ -1,5 +1,4 @@
-// 3. Paralelizar la búsqueda del mínimo y el máximo valor en un vector de N elementos. Ejecutar
-// con 2 y 4 Threads.
+//5. Paralelizar un algoritmo que calcule el valor promedio de N elementos almacenados en un vector. Ejecutar con 2 y 4 Threads.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,8 +23,7 @@ void *prom_calc(void *ptr);
 
 int main(int argc, char *argv[])
 {
-  int i;
-  int check = 1;
+  int i, check = 1;
   double timetick;
 
   //Controla los argumentos al programa
