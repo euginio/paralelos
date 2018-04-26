@@ -19,9 +19,9 @@ int main(int argc,char*argv[]){
  // I => fila J=> columna. 
 
   for(i=0;i<N;i++){
-   #pragma omp parallel for shared(A) private(i,j)
+   #pragma omp parallel for shared(A) shared(i,j)
    for(j=0;j<N;j++){
-		A[i*N+j]=i*j;
+	A[i*N+j]=i*j;
    }
   }   
 
@@ -43,3 +43,4 @@ int main(int argc,char*argv[]){
  return(0);
 }
 
+// la variable i no puede ser privada porque no te aseguràs de que empiece inicializada
