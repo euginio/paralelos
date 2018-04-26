@@ -47,6 +47,7 @@ int main(int argc,char*argv[]){
  //Realiza la multiplicacion
   #pragma omp parallel for shared(A,B,C) private(k,j) //0.29 con 512 4
   for(i=0;i<N;i++){
+//    #pragma omp parallel for shared(A,B,C,i) private(k) //0.29 con 512 4
    for(j=0;j<N;j++){
     C[i*N+j]=0;
     for(k=0;k<N;k++){
@@ -92,4 +93,4 @@ double dwalltime()
 	return sec;
 }
 
-
+// Es mejor paralelizar una sola vez el primer for 

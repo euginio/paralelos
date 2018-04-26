@@ -3,6 +3,14 @@
 #include<stdlib.h>
 #include<omp.h> 
 
+/*4. El programa traspuesta.c calcula la transpuesta de una matriz triangular de N*N. Compilar y
+ejecutar para 4 threads comparándolo con el algoritmo secuencial.
+El programa tiene un problema, describir de que problema se trata. ¿Qué cláusula
+usaría para corregir el problema? Describir brevemente la cláusula OpenMP que
+resuelve el problema y las opciones que tiene. Corregir y ejecutar de nuevo
+comparando con los resultados anteriores.*/
+
+
 /* Time in seconds from some point in the past */
 double dwalltime();
 
