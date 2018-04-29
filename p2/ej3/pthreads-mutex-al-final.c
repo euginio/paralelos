@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
   double timetick;
 
   //Controla los argumentos al programa
-  if ((argc != 3) || ((N = atoi(argv[1])) <= 0) || ((NUM_THREADS = atoi(argv[2])) <= 0))
+  if ((argc != 4) || ((N = atoi(argv[1])) <= 0) || ((NUM_THREADS = atoi(argv[2])) <= 0) || ((x = atoi(argv[3])) <= 0))
   {
     printf("\nUsar: %s n\n  n: Dimension del vector N\n", argv[0]);
     printf("\nUsar: %s NUM_THREADS\n  NUM_THREADS: cantidad de hilos\n", argv[0]);

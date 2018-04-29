@@ -60,6 +60,7 @@ int main(int argc, char *argv[])
     pthread_join(threads[i], NULL);
   }
   printf("Tiempo en segundos %f\n", dwalltime() - timetick);
+  printf("tot %d\n", tot);
 
   printf("tot %d \n", tot);
 
@@ -73,16 +74,15 @@ void *num_ocurrencias(void *ptr)
   p = (int *)ptr;
   id = *p;
 
-  int i, aux = 0;
+  int i;
   // printf("N %d \n", N);
   // printf("NUM_THREADS %d \n", NUM_THREADS);
   // printf("id %d \n", id);
 
   for (i = (N / NUM_THREADS * id); i < (N / NUM_THREADS * (id + 1)); i++)
   {
-    if (vector[i] == x)
-    {
-      aux = aux + 1;
+    if (vector[i] == x){
+      tot = tot + 1;
     }
     // printf("tot %d ", tot);
   }
