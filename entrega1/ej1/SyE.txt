@@ -1,0 +1,14 @@
+Preguntas:
+1) La fórmula es multiplicando los 4 factores de la izq y sumandolos con la multiplicacion
+ de los 4 factores de la derecha?
+
+2) Hace falta generar números aleatorios para las pruebas?
+
+
+CSV para cuadros
+
+Speedup
+# P, 512, 1024, 2048
+sec,
+2  ,
+4  ,
