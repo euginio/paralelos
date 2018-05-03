@@ -1,0 +1,6 @@
+Son 3 tablas, para TiempoEjecuciòn, SP y Ef
+
+El tipo de dato int tiene precisiòn hasta 2500 millones, usar "unsigned int" o "unsigned long"
+
+Implementar el secuencial a parte para poder comparar los tiempos de la implementaciòn 
+pthread y openmp
